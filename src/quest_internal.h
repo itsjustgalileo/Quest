@@ -54,6 +54,10 @@
 
 #include <quest/quest.h>
 
+#if defined(DEBUG) || defined(_DEBUG) || defined(QUEST_DEBUG)
+#include <quest/quest_debug_tools.h>
+#endif
+
 #include <quest/quest_header.h>
 
 #ifdef __cplusplus

@@ -1,0 +1,13 @@
+*.out
+*.exe
+*.o
+*.obj
+*.a
+*.so
+*.lib
+*.dll
+
+build*
+build/
+bin/
+ports/

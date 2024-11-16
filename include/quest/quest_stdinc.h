@@ -8,7 +8,7 @@
 #include <string.h>
 #include <wchar.h>
 
-#ifdef __cplusplus
+#ifndef __cplusplus
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || \
     defined(_MSC_VER) && _MSC_VER >= 1910 || \
     defined(QUEST_INCLUDE_STDBOOL_H)
@@ -62,6 +62,9 @@ void *alloca(size_t);
 
 #define QUEST_ARRAY_LENGTH(arr) (sizeof(arr) / sizeof(arr[0]))
 #define QUEST_STRINGIFY(arg) #arg
+
+#define QUEST_SUCCESS  0
+#define QUEST_FAILURE !0
 
 #ifdef __cplusplus
 #define quest_static_cast(type, value) static_cast<type>(value)

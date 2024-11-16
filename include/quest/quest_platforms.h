@@ -24,6 +24,10 @@
 
 #if defined(_WIN32) || defined(QUEST_PLATFORM_MINGW32)
 #define QUEST_PLATFORM_WINDOWS 1
+
+#define QUEST_PLATFORM_WIN32 1
 #endif /* defined(_WIN32) || defined(QUEST_PLATFORM_MINGW32) */
+
+/* Add more platforms here */
 
 #endif /* QUEST_PLATFORMS_H_ */

@@ -12,14 +12,22 @@
 #endif /* !QUEST_DECL */
 
 #ifndef QUEST_BREAKPOINT
+#if defined(DEBUG) || defined(_DEBUG) || defined(QUEST_DEBUG)
 #if defined(QUEST_PLATFORM_WINDOWS) && !defined(__GNUC__)
 #define QUEST_BREAKPOINT __debugbreak()
-#elif defined(__GNUC__) || defined(__clang__)
-#define QUEST_BREAKPOINT raise(SIGTRAP);
+#elif defined(__GNUC__) && !defined(__clang__)
+/* HIGHLY RISKY */
+extern int raise(int);
+#define QUEST_BREAKPOINT raise(5)
+#elif defined(__clang__)
+#define QUEST_BREAKPOINT __builtin_debugtrap()
 #else
 #error "Define breakpoint for platform"
-#define QUEST_BREAKPOINT
+#define QUEST_BREAKPOINT *(volatile int *)0 = 0
 #endif /*  defined(QUEST_PLATFORM_WINDOWS) && !defined(__GNUC__) */
+#else
+#define QUEST_BREAKPOINT exit(1)
+#endif /*  defined(DEBUG) || defined(_DEBUG) || defined(QUEST_DEBUG) */
 #endif /* QUEST_BREAKPOINT */
 
 #ifndef QUEST_API
@@ -90,35 +98,3 @@
 #define QUEST_FORCE_INLINE static QUEST_INLINE
 #endif
 #endif /* QUEST_FORCE_INLINE not defined */
-
-#ifndef QUEST_MALLOC
-#if defined(__GNUC__) && (__GNUC__ >= 3)
-#define QUEST_MALLOC __attribute__((malloc))
-/** FIXME
-#elif defined(_MSC_VER)
-#define QUEST_MALLOC __declspec(allocator) __desclspec(restrict)
-**/
-#else
-#define QUEST_MALLOC
-#endif
-#endif /* QUEST_MALLOC not defined */
-
-#ifndef QUEST_ALLOC_SIZE
-#if (defined(__clang__) && __clang_major__ >= 4) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
-#define QUEST_ALLOC_SIZE(p) __attribute__((alloc_size(p)))
-#elif defined(_MSC_VER)
-#define QUEST_ALLOC_SIZE(p)
-#else
-#define QUEST_ALLOC_SIZE(p)
-#endif
-#endif /* QUEST_ALLOC_SIZE not defined */
-
-#ifndef QUEST_ALLOC_SIZE2
-#if (defined(__clang__) && __clang_major__ >= 4) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)))
-#define QUEST_ALLOC_SIZE2(p1, p2) __attribute__((alloc_size(p1, p2)))
-#elif defined(_MSC_VER)
-#define QUEST_ALLOC_SIZE2(p1, p2)
-#else
-#define QUEST_ALLOC_SIZE2(p1, p2)
-#endif
-#endif /* QUEST_ALLOC_SIZE2 not defined */
